@@ -1,11 +1,12 @@
-#!/bin/bash
+#!/bin/bash -x
 set -o errexit
 set -o pipefail
 
 readonly CSV_FILE=${CSV_FILE:-"extracts.csv"}
 readonly PLANET_MBTILES=${PLANET_MBTILES:-"planet.mbtiles"}
 readonly EXTRACT_DIR=$(dirname "$PLANET_MBTILES")
-readonly PATCH_SRC="$EXTRACT_DIR/planet_z0-z5.mbtiles"
+readonly PATCH_ZOOM=${BASE_ZOOM:-"9"}
+readonly PATCH_SRC=$EXTRACT_DIR/${PLANET_BASE:-"planet_z0-z${PATCH_ZOOM}.mbtiles"}
 
 function main() {
     if [ ! -f "$PLANET_MBTILES" ]; then
@@ -20,10 +21,14 @@ function main() {
     fi
 
     # Generate patch sources first but do not upload them
-    python -u create_extracts.py zoom-level "$PLANET_MBTILES" \
+    if [ ! -f $MG_HARD_DISK/output/planet_z0-z5.mbtiles ];then
+      python -u create_extracts.py zoom-level "$PLANET_MBTILES" \
         --max-zoom=5 --target-dir="$EXTRACT_DIR"
-    python -u create_extracts.py zoom-level "$PLANET_MBTILES" \
-        --max-zoom=8 --target-dir="$EXTRACT_DIR"
+    fi
+    if [ ! -f $MG_HARD_DISK/output/planet_z0-z${PATCH_ZOOM}.mbtiles ];then
+       python -u create_extracts.py zoom-level "$PLANET_MBTILES" \
+        --max-zoom=${PATCH_ZOOM} --target-dir="$EXTRACT_DIR"
+    fi
 
     python -u create_extracts.py bbox "$PLANET_MBTILES" "$CSV_FILE" \
         --patch-from="$PATCH_SRC" --target-dir="$EXTRACT_DIR" $upload_flag

@@ -78,6 +78,10 @@ def create_extract(extract, source_file, extract_file):
     source = 'mbtiles://' + os.path.abspath(source_file)
     sink = 'mbtiles://' + os.path.abspath(extract_file)
 
+    cmd = ['logger', str(extract_file)]
+    subprocess.check_call(cmd)
+    print(extract_file)
+
     print('Bounds: {}'.format(extract.bounds()))
     cmd = [
         'tilelive-copy',
@@ -113,6 +117,9 @@ def parse_extracts(csv_file):
     with open(args['<csv_file>'], 'r') as file_handle:
         reader = csv.DictReader(file_handle, delimiter=',',)
         for row in reader:
+            outfile = os.path.join(os.environ["MG_HARD_DISK"],'output',
+               row['extract'] + '.mbtiles')
+            if os.path.isfile(outfile): continue
             yield Extract(
                 row['extract'],
                 row['country'],
