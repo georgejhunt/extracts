@@ -120,6 +120,7 @@ def parse_extracts(csv_file):
             outfile = os.path.join(os.environ["MG_HARD_DISK"],'output',
                row['extract'] + '.mbtiles')
             if os.path.isfile(outfile): continue
+	    if row['extract'] == 'world': continue
             yield Extract(
                 row['extract'],
                 row['country'],
