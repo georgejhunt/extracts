@@ -21,11 +21,11 @@ function main() {
     fi
 
     # Generate patch sources first but do not upload them
-    if [ ! -f $MG_HARD_DISK/output/planet_z0-z5.mbtiles ];then
+    if [ ! -f $MR_HARD_DISK/output/planet_z0-z5.mbtiles ];then
       python -u create_extracts.py zoom-level "$PLANET_MBTILES" \
         --max-zoom=5 --target-dir="$EXTRACT_DIR"
     fi
-    if [ ! -f $MG_HARD_DISK/output/planet_z0-z${PATCH_ZOOM}.mbtiles ];then
+    if [ ! -f $MR_HARD_DISK/output/planet_z0-z${PATCH_ZOOM}.mbtiles ];then
        python -u create_extracts.py zoom-level "$PLANET_MBTILES" \
         --max-zoom=${PATCH_ZOOM} --target-dir="$EXTRACT_DIR"
     fi
