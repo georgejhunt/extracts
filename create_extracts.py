@@ -119,8 +119,10 @@ def parse_extracts(csv_file):
         for row in reader:
             outfile = os.path.join(os.environ["MR_HARD_DISK"],'output',
                row['extract'] + '.mbtiles')
-            if os.path.isfile(outfile): continue
-	    if row['extract'] == 'world': continue
+            if os.path.isfile(outfile): 
+               print("refusing to overwrite %s"%outfile)
+               continue
+            if row['extract'] == 'world': continue
             yield Extract(
                 row['extract'],
                 row['country'],
