@@ -75,7 +75,10 @@ class Extract(object):
 
 
 def create_extract(extract, source_file, extract_file):
-    source = 'mbtiles://' + os.path.abspath(source_file)
+    if source_file.startswith('tms'):
+      source = source_file
+    else:
+      source = 'mbtiles://' + os.path.abspath(source_file)
     sink = 'mbtiles://' + os.path.abspath(extract_file)
 
     cmd = ['logger', str(extract_file)]
@@ -84,14 +87,14 @@ def create_extract(extract, source_file, extract_file):
 
     print('Bounds: {}'.format(extract.bounds()))
     cmd = [
-        'tilelive-copy',
+        'npx', 'tilelive-copy',
         '--bounds={}'.format(extract.bounds()),
         '--minzoom', str(extract.min_zoom),
         '--maxzoom', str(extract.max_zoom),
         '--timeout=1800000',
         source, sink
     ]
-
+    print('Command sent to tilelive-copy:%s'%cmd)
     subprocess.check_call(cmd)
 
 
@@ -173,7 +176,11 @@ if __name__ == '__main__':
 
     if args['zoom-level']:
         max_zoom_level = int(args['--max-zoom'])
-        extract = Extract('planet_z0-z{}'.format(max_zoom_level),
+        if source_file.startswith('tms'):
+            prefix = 'satellite'
+        else:
+            prefix = 'planet'
+        extract = Extract('{}_z0-z{}'.format(prefix,max_zoom_level),
                           country=None,
                           city=None,
                           left=-180,
