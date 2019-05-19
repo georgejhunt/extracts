@@ -75,7 +75,8 @@ class Extract(object):
 
 
 def create_extract(extract, source_file, extract_file):
-    if source_file.startswith('tms'):
+    if source_file.startswith('tms') or\
+                   source_file.startswith('s3'):
       source = source_file
     else:
       source = 'mbtiles://' + os.path.abspath(source_file)
