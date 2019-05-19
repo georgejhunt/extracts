@@ -117,7 +117,7 @@ def parse_extracts(csv_file):
     with open(args['<csv_file>'], 'r') as file_handle:
         reader = csv.DictReader(file_handle, delimiter=',',)
         for row in reader:
-            outfile = os.path.join(os.environ["MR_HARD_DISK"],'output',
+            outfile = os.path.join(os.environ["MR_SSD"],'output','stage2',
                row['extract'] + '.mbtiles')
             if os.path.isfile(outfile): continue
 	    if row['extract'] == 'world': continue
