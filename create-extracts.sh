@@ -31,7 +31,8 @@ function main() {
     fi
 
     python -u create_extracts.py bbox "$PLANET_MBTILES" "$CSV_FILE" \
-        --patch-from="$PATCH_SRC" --target-dir="$EXTRACT_DIR" $upload_flag
+        --target-dir="$EXTRACT_DIR" --min-zoom=11
+        #--patch-from="$PATCH_SRC" --target-dir="$EXTRACT_DIR" 
 }
 
 main

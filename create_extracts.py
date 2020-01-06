@@ -2,7 +2,7 @@
 """Generate jobs for rendering tiles in pyramid and list format in JSON format
 
 Usage:
-  create_extracts.py bbox <source_file> <csv_file> [--patch-from=<patch-src>]  [--concurrency=<concurrency>] [--target-dir=<target-dir>]
+  create_extracts.py bbox <source_file> <csv_file> [--patch-from=<patch-src>]  [--concurrency=<concurrency>] [--target-dir=<target-dir>] [--min-zoom=<min-zoom>]
   create_extracts.py zoom-level <source_file> --max-zoom=<max-zoom> [--target-dir=<target-dir>]
   create_extracts.py (-h | --help)
   create_extracts.py --version
@@ -12,6 +12,7 @@ Options:
   --version                     Show version.
   --patch-from=<patch-src>      Patch MBTiles file with other MBTiles src.
   --concurrency=<concurrency>   Number of copy processes to use [default: 4].
+  --min-zoom=<min-zoom>         Min zoom level for bounded extract.
   --max-zoom=<max-zoom>         Max zoom level of low zoom level extract.
   --target-dir=<target-dir>     Target directory to put extracts in [default: ./]
 """
@@ -134,7 +135,8 @@ def parse_extracts(csv_file):
                 float(row['top']),
                 float(row['left']),
                 float(row['bottom']),
-                float(row['right'])
+                float(row['right']),
+                min_zoom = args.get('min-zoom',0)
             )
 
 
