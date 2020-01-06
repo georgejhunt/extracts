@@ -136,12 +136,13 @@ def parse_extracts(csv_file):
                 float(row['left']),
                 float(row['bottom']),
                 float(row['right']),
-                min_zoom = args.get('min-zoom',0)
+                min_zoom = args.get('--min-zoom',0)
             )
 
 
 if __name__ == '__main__':
     args = docopt(__doc__, version='0.1')
+    print(str(args))
 
     target_dir = args['--target-dir']
     source_file = args['<source_file>']
