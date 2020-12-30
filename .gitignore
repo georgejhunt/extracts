@@ -10,3 +10,5 @@ __pycache__/
 
 # Temp edit files
 *.swp
+node_modules
+data
