@@ -1,0 +1,26 @@
+{
+  "name": "extracts",
+  "version": "1.0.0",
+  "description": "The **create-extracts** component is responsible for cutting out specific country and city extracts as specified in the `extracts.csv` CSV file from a planet scale MBTiles file.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/georgejhunt/extracts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/georgejhunt/extracts/issues"
+  },
+  "homepage": "https://github.com/georgejhunt/extracts#readme",
+  "dependencies": {
+    "@mapbox/mbtiles": "^0.11.0",
+    "@mapbox/tilelive": "^6.0.0",
+    "tilelive-s3": "^6.5.0",
+    "tilelive-tms": "^0.1.4"
+  }
+}

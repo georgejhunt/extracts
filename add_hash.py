@@ -22,6 +22,7 @@ if __name__ == '__main__':
     args = docopt(__doc__, version='0.1')
     with open(args['<csv_file>'], "r") as file_handle:
         for line in file_handle:
+            if line.split(',')[0] == 'extract': continue
             coords = line.split(',')[-4:]
             min_lon = float(coords[0])
             min_lat = float(coords[1])
