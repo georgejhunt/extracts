@@ -9,6 +9,7 @@ readonly EXTRACT_DIR=${EXTRACT_DIR:-"PLANET_MBTILES"}
 readonly PATCH_ZOOM=${BASE_ZOOM:-"10"}
 readonly PATCH_SRC=$EXTRACT_DIR/${PLANET_BASE:-"planet_z0-z${PATCH_ZOOM}.mbtiles"}
 scriptdir=$(dirname $0)
+PYTHON3='/opt/iiab/jupyterhub/bin/python3'
 
 echo $CSV_FILE
 echo $PLANET_MBTILES
@@ -31,20 +32,20 @@ function main() {
     # Generate patch sources first but do not upload them
     if [ ! -f $EXTRACT_DIR/planet_z0-z6.mbtiles ];then
       echo Writing $EXTRACT_DIR/planet_z0-z6.mbtiles
-      python3 -u $scriptdir/create_extracts.py zoom-level "$PLANET_MBTILES" \
+      $PYTHON3 -u $scriptdir/create_extracts.py zoom-level "$PLANET_MBTILES" \
         --max-zoom=6 --target-dir="$EXTRACT_DIR"
     else
         echo File already exists: $EXTRACT_DIR/planet_z0-z6.mbtiles
     fi
     if [ ! -f $EXTRACT_DIR/planet_z0-z${PATCH_ZOOM}.mbtiles ];then
        echo 'Writing %S'%$EXTRACT_DIR/planet_z0-z${PATCH_ZOOM}.mbtiles
-       python3 -u $scriptdir/create_extracts.py zoom-level "$PLANET_MBTILES" \
+       $PYTHON3 -u $scriptdir/create_extracts.py zoom-level "$PLANET_MBTILES" \
         --max-zoom=${PATCH_ZOOM} --target-dir="$EXTRACT_DIR"
     else
         echo File already exists: $EXTRACT_DIR/planet_z0-z${PATCH_ZOOM}.mbtiles 
     fi
 
-    python3 -u $scriptdir/create_extracts.py bbox "$PLANET_MBTILES" "$CSV_FILE" \
+    $PYTHON3 -u $scriptdir/create_extracts.py bbox "$PLANET_MBTILES" "$CSV_FILE" \
         --target-dir="$EXTRACT_DIR" --min-zoom=11
         #--patch-from="$PATCH_SRC" --target-dir="$EXTRACT_DIR" 
 }
