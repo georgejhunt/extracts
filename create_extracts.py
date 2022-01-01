@@ -182,8 +182,8 @@ if __name__ == '__main__':
         if source_file.startswith('tms'):
             prefix = 'satellite'
         else:
-            prefix = 'planet'
-        extract = Extract('{}_z0-z{}'.format(prefix,max_zoom_level),
+            prefix = 'osm-planet'
+        extract = Extract('{}_z0-z{}_2020'.format(prefix,max_zoom_level),
                           country=None,
                           city=None,
                           left=-180,

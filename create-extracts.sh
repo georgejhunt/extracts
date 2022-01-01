@@ -1,11 +1,12 @@
-#!/bin/bash 
+#!/bin/bash -x
 set -o errexit
 set -o pipefail
 
-readonly CSV_FILE=${CSV_FILE:-"./data/iiab.csv"}
+PREFIX=/ext/maps-2020
+readonly CSV_FILE=${CSV_FILE:-"$PREFIX/input/extracts.csv"}
 # https://ia802807.us.archive.org/21/items/osm-vector-mbtiles/2020-10-planet-14.mbtiles
-readonly PLANET_MBTILES=${PLANET_MBTILES:-"./data/2020-10-planet-14.mbtiles"}
-readonly EXTRACT_DIR=${EXTRACT_DIR:-"PLANET_MBTILES"}
+readonly PLANET_MBTILES=${PLANET_MBTILES:-"${PREFIX}/input/2020-10-planet-14.mbtiles"}
+readonly EXTRACT_DIR=${EXTRACT_DIR:-"$PREFIX/output"}
 readonly PATCH_ZOOM=${BASE_ZOOM:-"10"}
 readonly PATCH_SRC=$EXTRACT_DIR/${PLANET_BASE:-"planet_z0-z${PATCH_ZOOM}.mbtiles"}
 scriptdir=$(dirname $0)
@@ -24,8 +25,7 @@ function main() {
     fi
 
     local upload_flag='--upload'
-    if [ -z "${S3_ACCESS_KEY}" ]; then
-        upload_flag=''
+    if [ -z "${S3_ACCESS_KEY}" ]; then upload_flag=''
         echo 'Skip upload since no S3_ACCESS_KEY was found.'
     fi
 
@@ -37,8 +37,8 @@ function main() {
     else
         echo File already exists: $EXTRACT_DIR/planet_z0-z6.mbtiles
     fi
-    if [ ! -f $EXTRACT_DIR/planet_z0-z${PATCH_ZOOM}.mbtiles ];then
-       echo 'Writing %S'%$EXTRACT_DIR/planet_z0-z${PATCH_ZOOM}.mbtiles
+    if [ ! -f $EXTRACT_DIR/osm-planet_z0-z${PATCH_ZOOM}_2020.mbtiles ];then
+       echo Writing $EXTRACT_DIR/osm-planet_z0-z${PATCH_ZOOM}-_2020.mbtiles
        $PYTHON3 -u $scriptdir/create_extracts.py zoom-level "$PLANET_MBTILES" \
         --max-zoom=${PATCH_ZOOM} --target-dir="$EXTRACT_DIR"
     else
